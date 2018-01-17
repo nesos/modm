@@ -16,3 +16,6 @@
 [submodule "ext/gcc/libstdc++"]
 	path = ext/gcc/libstdc++
 	url = https://github.com/modm-io/avr-libstdcpp.git
+[submodule "ext/aws/freertos"]
+	path = ext/aws/freertos
+	url = https://github.com/modm-io/freertos.git

@@ -40,6 +40,7 @@ def build(env):
     properties["systick_frequency"] = int(env.get_option(":freertos:frequency", 1000))
     if (properties["systick_frequency"] % 1000 != 0):
         raise BuildException("SysTick frequency must be a multiple of 1000Hz!")
+    properties["has_freertos"] = env.has_module(":freertos")
 
     env.substitutions = properties
     env.outbasepath = "modm/src/modm/platform/clock"

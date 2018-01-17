@@ -1,6 +1,6 @@
 /*
  * Copyright (c) 2013, Kevin Läufer
- * Copyright (c) 2014-2017, Niklas Hauser
+ * Copyright (c) 2014-2018, Niklas Hauser
  * Copyright (c) 2017, Fabian Greif
  *
  * This file is part of the modm project.
@@ -24,7 +24,11 @@ static uint8_t counter;
 %% endif
 
 extern "C" void
+%% if has_freertos
+vApplicationTickHook()
+%% else
 SysTick_Handler(void)
+%% endif
 {
 %% if systick_frequency > 1000
 	if (--counter == 0)
@@ -33,7 +37,7 @@ SysTick_Handler(void)
 		counter = {{ systick_frequency // 1000 }};
 	}
 %% else
-	modm::Clock::increment();
+	modm::Clock::increment({{ 1000 // systick_frequency }});
 %% endif
 	if (sysTickHandler) sysTickHandler();
 }
@@ -46,6 +50,7 @@ modm::cortex::SysTickTimer::enable(uint32_t reload)
 	counter = {{ systick_frequency // 1000 }};
 %% endif
 
+%% if not has_freertos
 	SysTick->LOAD = reload;
 	// Lower systick interrupt priority to lowest level
 	NVIC_SetPriority(SysTick_IRQn, 0xf);
@@ -55,12 +60,15 @@ modm::cortex::SysTickTimer::enable(uint32_t reload)
 			SysTick_CTRL_CLKSOURCE_Msk |
 			SysTick_CTRL_ENABLE_Msk |
 			SysTick_CTRL_TICKINT_Msk;
+%% endif
 }
 
 void
 modm::cortex::SysTickTimer::disable()
 {
+%% if not has_freertos
 	SysTick->CTRL = SysTick_CTRL_CLKSOURCE_Msk;
+%% endif
 }
 
 // ----------------------------------------------------------------------------

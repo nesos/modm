@@ -35,7 +35,7 @@ def prepare(module, options):
             enumeration=range(1000, 10001, 1000),
             default=1000))
 
-    return True
+    return False
 
 def build(env):
     env.outbasepath = "modm/ext/freertos"
