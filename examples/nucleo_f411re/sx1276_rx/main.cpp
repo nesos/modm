@@ -51,6 +51,7 @@ main()
 	RF_CALL_BLOCKING(loraModem.setModemParams(sx1276::Bandwidth::BW_7,
 											  sx1276::SpreadingFactor::SF_8,
 											  sx1276::CodingRate::CR_4_8,
+											  8,
 											  false,
 											  false));
 	// Set Carrier Frequency
