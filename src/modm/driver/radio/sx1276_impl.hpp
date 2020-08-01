@@ -183,10 +183,6 @@ Sx1276<SpiMaster, Cs>::transmit(uint8_t* data, uint8_t length)
 
 		RF_CALL(changeMode(ModemMode::TX));
 	}
-	else
-	{
-		MODM_LOG_ERROR<<"SX1276: Transmission failed as the modem is busy"<<modm::endl;
-	}
 
 	RF_END_RETURN(lastTransmitResult);
 }
@@ -254,7 +250,6 @@ Sx1276<SpiMaster, Cs>::readPacket(uint8_t* data, uint8_t maxLength)
 			RF_CALL(SpiMaster::transfer(buffer,nullptr,1));
 			if(lastPacketSize > maxLength)
 			{
-				MODM_LOG_ERROR<<"SX1276: Read buffer is too small, packet discarded!"<<modm::endl;
 				//read it out anyway to clean the fifo
 				RF_CALL(SpiMaster::transfer(nullptr,nullptr,lastPacketSize));
 			}
@@ -271,10 +266,6 @@ Sx1276<SpiMaster, Cs>::readPacket(uint8_t* data, uint8_t maxLength)
 			RF_CALL(writeRegister(Sx1276Register::IrqFlags, static_cast<uint8_t>(Interrupts::RX_DONE)));
 
 		}
-	}
-	else
-	{
-		MODM_LOG_ERROR<<"SX1276: ReadPacket can only called when enabling listening first!"<<modm::endl;
 	}
 
 	RF_END_RETURN(lastPacketSize);
