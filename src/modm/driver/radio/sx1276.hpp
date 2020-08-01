@@ -48,6 +48,7 @@ public:
 	 * \param bw    The Bandwidth of the LoRa Transmission
 	 * \param sf    The Spreading factor for each symbol
 	 * \param cr    The Coding rate for the symbols
+	 * \param preambleLength The length of the packet preamble in symbols
 	 * \param implicitHeader Run the modem in implicit header mode
 	 * \param payloadCrc Append CRC checksums to validate the packages
 	 */
@@ -55,6 +56,7 @@ public:
 	setModemParams( Bandwidth bw,
 					SpreadingFactor sf,
 					CodingRate cr,
+					uint16_t preambleLength,
 					bool implicitHeader,
 					bool payloadCrc);
 

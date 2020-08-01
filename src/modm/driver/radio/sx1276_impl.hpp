@@ -89,6 +89,7 @@ modm::ResumableResult<void>
 Sx1276<SpiMaster, Cs>::setModemParams(  Bandwidth bw,
 										SpreadingFactor sf,
 										CodingRate cr,
+										uint16_t preambleLength,
 										bool implicitHeader,
 										bool payloadCrc)
 {
@@ -122,6 +123,10 @@ Sx1276<SpiMaster, Cs>::setModemParams(  Bandwidth bw,
 	RF_CALL(writeRegister(Sx1276Register::ModemConfig1,modemConf1Shadow.value));
 	RF_CALL(writeRegister(Sx1276Register::ModemConfig2,modemConf2Shadow.value));
 	RF_CALL(writeRegister(Sx1276Register::ModemConfig3,modemConf3Shadow.value));
+
+	// Write out the preambleLength
+	RF_CALL(writeRegister(Sx1276Register::PreambleLsb,static_cast<uint8_t>(preambleLength)));
+	RF_CALL(writeRegister(Sx1276Register::PreambleMsb,static_cast<uint8_t>(preambleLength >> 8)));
 
 	//Configure the optimizations
 	if(sf == SpreadingFactor::SF_6)
